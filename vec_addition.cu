@@ -34,19 +34,19 @@ int main()
 
     //Copy data from CPU to the GPU
     cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
-    cudaMemcpy2D(d_B, h_B, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
 
     //Launch Kernel
     int threadsPerBlock = 256;
     int blocks = (N + threadsPerBlock -1 )/ threadsPerBlock;
     vectorAdd<<<blocks, threadsPerBlock>>>(d_A, d_B, d_C, N);
-
+    
     //Copy the rese 2: Image Processisults back after getting from the above vectorAdd function
     cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
 
     //print few results to check them
     for (int i =0; i< 10; ++i)
-        std::cout << h_A[i] << "+" << h_B[i] << " = " << h_C[i] << endl;
+        std::cout << h_A[i] << "+" << h_B[i] << " = " << h_C[i] << std::endl;
 
     //Free the GPU Memory - cleanup
     cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
